@@ -2,7 +2,7 @@ import React from "react"
 import { Route } from "react-router-dom"
 
 import Employee from "./employees/Employee"
-import EmployeeList from "./employees/EmployeeList"
+import { EmployeeList } from "./employees/EmployeeList"
 import EmployeeForm from "./employees/EmployeeForm"
 
 export default () => {

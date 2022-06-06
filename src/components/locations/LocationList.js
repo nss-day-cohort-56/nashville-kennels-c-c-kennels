@@ -9,6 +9,12 @@ export const LocationList = () => {
 
     useEffect(() => {
         LocationRepository.getAll()
+
+        fetch(`http://localhost:8088/locations`)
+            .then(response => response.json())
+            .then((data) => {
+                updateLocations(data)
+            })
     }, [])
 
     return (
