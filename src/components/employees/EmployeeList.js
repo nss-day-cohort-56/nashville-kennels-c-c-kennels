@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react"
-import Employee from "./Employee"
+import React, { useState, useEffect } from "react" //useState is a property, useEffect is a property
+import Employee from "./Employee" //assign function to variable Employee (reference to a function)
 import EmployeeRepository from "../../repositories/EmployeeRepository"
 import "./EmployeeList.css"
 
@@ -24,7 +24,7 @@ export const EmployeeList = () => {
         <>
             <div className="employees">
                 {
-                    emps.map(a => <Employee key={a.id} employee={a} />)
+                    emps.map(a => <Employee key={a.id} employee={a} setEmployees={setEmployees}/>)
                 }
             </div>
         </>

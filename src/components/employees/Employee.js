@@ -7,24 +7,25 @@ import person from "./person.png"
 import "./Employee.css"
 
 
-export default ({ employee }) => {
+export default ({ employee, setEmployees }) => {
     const [animalCount, setCount] = useState(0)
-    const [location, markLocation] = useState({ name: "" })
+    const [employeeLocation, markLocation] = useState({ name: "" })
     const [classes, defineClasses] = useState("card employee")
     const { employeeId } = useParams()
     const { getCurrentUser } = useSimpleAuth()
-    const { resolveResource, resource } = useResourceResolver()
+    const { resolveResource, resource } = useResourceResolver() //function, resource that gets resolved
 
     useEffect(() => {
         if (employeeId) {
             defineClasses("card employee--single")
         }
-        resolveResource(employee, employeeId, EmployeeRepository.get)
+        resolveResource(employee, employeeId, EmployeeRepository.get) //property, param, getter
     }, [])
 
     useEffect(() => {
-        if (resource?.employeeLocations?.length > 0) {
-            markLocation(resource.employeeLocations[0])
+        if (resource?.locations?.length > 0) {
+            markLocation(resource.locations[0])
+            console.log(getCurrentUser)
         }
     }, [resource])
 
@@ -53,15 +54,27 @@ export default ({ employee }) => {
                                 Caring for 0 animals
                             </section>
                             <section>
-                                
-                                Working at unknown location
+                                Working at {employeeLocation?.location?.name} location
                             </section>
                         </>
                         : ""
                 }
 
-                {
-                    <button className="btn--fireEmployee" onClick={() => {}}>Fire</button>
+                {   getCurrentUser().employee
+                   ?  <button className="btn--fireEmployee" onClick={() => {
+                        fetch(`http://localhost:8088/users/${employee.id}`, {
+                            method: "DELETE"
+                        })
+                            .then(() => {
+                                fetch(`http://localhost:8088/users?employees=true`)
+                                    .then(response => response.json())
+                                    .then((data) => {
+                                        setEmployees(data)
+                                    })
+
+                            })
+                    }}>Fire</button>
+                    : <></>
                 }
 
             </section>

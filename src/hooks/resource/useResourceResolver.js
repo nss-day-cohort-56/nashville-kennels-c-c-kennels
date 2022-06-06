@@ -8,7 +8,7 @@ const useResourceResolver = () => {
        console.log('resolved resource', resource)
     }, [resource])
 
-    const resolveResource = (property, param, getter) => {
+    const resolveResource = (property, param, getter) => { //
         // Resource passed as prop
         if (property && "id" in property) {
             setResource(property)
