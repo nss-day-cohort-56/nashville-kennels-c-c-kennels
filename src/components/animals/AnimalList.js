@@ -72,7 +72,7 @@ export const AnimalListComponent = (props) => {
                     animals.map(anml =>
                         <Animal key={`animal--${anml.id}`} animal={anml}
                             animalOwners={animalOwners}
-                            owners={owners}
+                            owners={animalOwners}
                             syncAnimals={syncAnimals}
                             setAnimalOwners={setAnimalOwners}
                             showTreatmentHistory={showTreatmentHistory}
