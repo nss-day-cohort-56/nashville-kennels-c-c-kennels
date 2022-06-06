@@ -51,7 +51,7 @@ export default ({ employee, setEmployees }) => {
                     employeeId
                         ? <>
                             <section>
-                                Caring for 0 animals
+                                Caring for {resource?.animals?.length} animals
                             </section>
                             <section>
                                 Working at {employeeLocation?.location?.name} location
