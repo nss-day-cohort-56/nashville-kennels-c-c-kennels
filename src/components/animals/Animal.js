@@ -18,11 +18,25 @@ export const Animal = ({ animal, syncAnimals,
     const history = useHistory()
     const { animalId } = useParams()
     const { resolveResource, resource: currentAnimal } = useResourceResolver()
+    const [caretakers, setCaretakers] = useState([])
 
     useEffect(() => {
         setAuth(getCurrentUser().employee)
         resolveResource(animal, animalId, AnimalRepository.get)
+
     }, [])
+
+    useEffect(
+        () => {
+            fetch(`http://localhost:8088/animalCaretakers?_expand=user`)
+            .then(response => response.json())
+            .then((data) => {
+                setCaretakers(data)
+            })
+
+        },
+        []
+    )
 
     useEffect(() => {
         if (owners) {
@@ -51,6 +65,9 @@ export const Animal = ({ animal, syncAnimals,
                 })
         }
     }, [animalId])
+
+    let foundCaretaker
+    let foundOwners = []
 
     return (
         <>
@@ -84,13 +101,25 @@ export const Animal = ({ animal, syncAnimals,
                         <section>
                             <h6>Caretaker(s)</h6>
                             <span className="small">
-                                Unknown
+                                {caretakers.map(caretaker => {
+                                    if(caretaker.animalId === animal.id) {
+                                        foundCaretaker = caretaker
+                                    } 
+                                })}
+                                {foundCaretaker?.user?.name}
                             </span>
 
 
                             <h6>Owners</h6>
                             <span className="small">
-                                Owned by unknown
+                                {owners.map(owner => {
+                                    if(owner.animalId === animal.id) {
+                                        foundOwners.push(owner)
+                                    }
+                                })}
+                                {foundOwners.map(foundOwner => {
+                                    return <div>Owned by {foundOwner?.user?.name}</div>
+                                })}
                             </span>
 
                             {
