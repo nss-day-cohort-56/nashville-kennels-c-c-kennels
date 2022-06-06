@@ -76,6 +76,7 @@ export const AnimalListComponent = (props) => {
                             syncAnimals={syncAnimals}
                             setAnimalOwners={setAnimalOwners}
                             showTreatmentHistory={showTreatmentHistory}
+                            animalSetter={petAnimals}
                         />)
                 }
             </ul>

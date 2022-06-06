@@ -8,7 +8,7 @@ import useResourceResolver from "../../hooks/resource/useResourceResolver";
 import "./AnimalCard.css"
 
 export const Animal = ({ animal, syncAnimals,
-    showTreatmentHistory, owners }) => {
+    showTreatmentHistory, owners, animalSetter }) => {
     const [detailsOpen, setDetailsOpen] = useState(false)
     const [isEmployee, setAuth] = useState(false)
     const [myOwners, setPeople] = useState([])
@@ -164,8 +164,16 @@ export const Animal = ({ animal, syncAnimals,
                                 ? <button className="btn btn-warning mt-3 form-control small" onClick={() =>
                                     AnimalOwnerRepository
                                         .removeOwnersAndCaretakers(currentAnimal.id)
-                                        .then(() => {}) // Remove animal
-                                        .then(() => {}) // Get all animals
+                                        .then(() => {fetch(`http://localhost:8088/animals/${currentAnimal.id}`, { method: "DELETE" })
+                                        .then(
+                                            () => {
+                                                fetch(`http://localhost:8088/animals`)
+                                                .then(response => response.json())
+                                                .then((animals) => {
+                                                    animalSetter(animals)
+                                                })
+                                            }
+                                        )}) // Remove animal // Get all animals
                                 }>Discharge</button>
                                 : ""
                         }
