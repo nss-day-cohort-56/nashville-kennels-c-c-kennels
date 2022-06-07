@@ -30,9 +30,8 @@ export const Animal = ({ animal, syncAnimals,
 
     useEffect(
         () => {
-            fetch(`http://localhost:8088/animalCaretakers?_expand=user`)
-            .then(response => response.json())
-            .then((data) => {
+
+            fetchIt(`${Settings.remoteURL}/animalCaretakers?_expand=user`).then((data) => {
                 setCaretakers(data)
             })
 
