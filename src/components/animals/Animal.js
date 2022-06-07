@@ -169,17 +169,7 @@ export const Animal = ({ animal, syncAnimals,
                                         .then(() => fetchIt(`${Settings.remoteURL}/animals/${currentAnimal.id}`, 
                                         request.delete(`${Settings.remoteURL}/animals/${currentAnimal.id}`), 
                                         fetchIt(`${Settings.remoteURL}/animals`)))
-                                        
-                                        /* .then(() => {fetch(`http://localhost:8088/animals/${currentAnimal.id}`, { method: "DELETE" })
-                                        .then(
-                                            () => {
-                                                fetch(`http://localhost:8088/animals`)
-                                                .then(response => response.json())
-                                                .then((animals) => {
-                                                    animalSetter(animals)
-                                                })
-                                            }
-                                        )}) */ // Remove animal // Get all animals
+                                         // Remove animal // Get all animals
                                 }>Discharge</button>
                                 : ""
                         }
