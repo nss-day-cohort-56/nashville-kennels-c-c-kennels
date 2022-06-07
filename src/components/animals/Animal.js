@@ -6,6 +6,8 @@ import OwnerRepository from "../../repositories/OwnerRepository";
 import useSimpleAuth from "../../hooks/ui/useSimpleAuth";
 import useResourceResolver from "../../hooks/resource/useResourceResolver";
 import "./AnimalCard.css"
+import { fetchIt, request } from "../../repositories/Fetch";
+import Settings from "../../repositories/Settings";
 
 export const Animal = ({ animal, syncAnimals,
     showTreatmentHistory, owners, animalSetter }) => {
@@ -164,7 +166,11 @@ export const Animal = ({ animal, syncAnimals,
                                 ? <button className="btn btn-warning mt-3 form-control small" onClick={() =>
                                     AnimalOwnerRepository
                                         .removeOwnersAndCaretakers(currentAnimal.id)
-                                        .then(() => {fetch(`http://localhost:8088/animals/${currentAnimal.id}`, { method: "DELETE" })
+                                        .then(() => fetchIt(`${Settings.remoteURL}/animals/${currentAnimal.id}`, 
+                                        request.delete(`${Settings.remoteURL}/animals/${currentAnimal.id}`), 
+                                        fetchIt(`${Settings.remoteURL}/animals`)))
+                                        
+                                        /* .then(() => {fetch(`http://localhost:8088/animals/${currentAnimal.id}`, { method: "DELETE" })
                                         .then(
                                             () => {
                                                 fetch(`http://localhost:8088/animals`)
@@ -173,7 +179,7 @@ export const Animal = ({ animal, syncAnimals,
                                                     animalSetter(animals)
                                                 })
                                             }
-                                        )}) // Remove animal // Get all animals
+                                        )}) */ // Remove animal // Get all animals
                                 }>Discharge</button>
                                 : ""
                         }
