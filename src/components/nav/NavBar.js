@@ -10,40 +10,64 @@ import "./NavBar.css"
 
 
 export const NavBar = () => {
-    const [ searchTerms, setTerms ] = useState("")
+    const [searchTerms, setTerms] = useState("")
     const { isAuthenticated, logout, getCurrentUser } = useSimpleAuth()
     const history = useHistory()
 
     const search = (e) => {
-        if (e.keyCode === 13) {
-            const terms = document.querySelector("#searchTerms").value
-            const foundItems = {
-                animals: [],
-                locations: [],
-                employees: []
-            }
+        if (getCurrentUser().employee) {
+            if (e.keyCode === 13) {
+                const terms = document.querySelector("#searchTerms").value
+                const foundItems = {
+                    animals: [],
+                    locations: [],
+                    employees: []
+                }
 
-            fetch(`${Settings.remoteURL}/users?employee=true&name_like=${encodeURI(terms)}`)
-                .then(r => r.json())
-                .then(employees => {
-                    foundItems.employees = employees
-                    return LocationRepository.search(terms)
-                })
-                .then(locations => {
-                    foundItems.locations = locations
-                    return AnimalRepository.searchByName(encodeURI(terms))
-                })
-                .then(animals => {
-                    foundItems.animals = animals
-                    setTerms("")
-                    history.push({
-                        pathname: "/search",
-                        state: foundItems
+                fetch(`${Settings.remoteURL}/users?employee=true&name_like=${encodeURI(terms)}`)
+                    .then(r => r.json())
+                    .then(employees => {
+                        foundItems.employees = employees
+                        return LocationRepository.search(terms)
                     })
-                })
-        }
-        else {
-            setTerms(e.target.value)
+                    .then(locations => {
+                        foundItems.locations = locations
+                        return AnimalRepository.searchByName(encodeURI(terms))
+                    })
+                    .then(animals => {
+                        foundItems.animals = animals
+                        setTerms("")
+                        history.push({
+                            pathname: "/search",
+                            state: foundItems
+                        })
+                    })
+            }
+            else {
+                setTerms(e.target.value)
+            }
+        } else {
+            if (e.keyCode === 13) {
+                const terms = document.querySelector("#searchTerms").value
+                const foundItems = {
+                    locations: [],
+                    employees: []
+                }
+
+                fetch(`${Settings.remoteURL}/users?employee=true&name_like=${encodeURI(terms)}`)
+                    .then(r => r.json())
+                    .then(employees => {
+                        foundItems.employees = employees
+                        return LocationRepository.search(terms)
+                    })
+                    .then(locations => {
+                        foundItems.locations = locations
+                        return AnimalRepository.searchByName(encodeURI(terms))
+                    })
+            }
+            else {
+                setTerms(e.target.value)
+            }
         }
     }
 
@@ -75,6 +99,7 @@ export const NavBar = () => {
                                 placeholder="Search"
                                 aria-label="Search" />
                         </li>
+
                     </ul>
                     <ul className="navbar-nav">
                         <li className="nav-item dropdown">
