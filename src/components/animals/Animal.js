@@ -167,9 +167,13 @@ export const Animal = ({ animal, syncAnimals,
                                     AnimalOwnerRepository
                                         .removeOwnersAndCaretakers(currentAnimal.id)
                                         .then(() => fetchIt(`${Settings.remoteURL}/animals/${currentAnimal.id}`, 
-                                        request.delete(`${Settings.remoteURL}/animals/${currentAnimal.id}`), 
-                                        fetchIt(`${Settings.remoteURL}/animals`)))
-                                         // Remove animal // Get all animals
+                                        "DELETE").then(() => {
+                                            AnimalRepository.getAll().then((animals) => {
+                                                animalSetter(animals)
+                                            })
+                                        })
+                                        )
+
                                 }>Discharge</button>
                                 : ""
                         }
