@@ -23,7 +23,7 @@ export const fetchIt = (url, method = "GET", body = null) => {
 }
 
 export const request = {
-    init(url) {
+    init(url) { //key whose value is a function
         this.options = {}
         this.options.headers = {}
         this.url = url

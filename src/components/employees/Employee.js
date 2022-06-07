@@ -5,6 +5,8 @@ import useResourceResolver from "../../hooks/resource/useResourceResolver";
 import useSimpleAuth from "../../hooks/ui/useSimpleAuth";
 import person from "./person.png"
 import "./Employee.css"
+import { fetchIt } from "../../repositories/Fetch";
+import Settings from "../../repositories/Settings";
 
 
 export default ({ employee, setEmployees }) => {
@@ -25,7 +27,6 @@ export default ({ employee, setEmployees }) => {
     useEffect(() => {
         if (resource?.locations?.length > 0) {
             markLocation(resource.locations[0])
-            console.log(getCurrentUser)
         }
     }, [resource])
 
@@ -60,17 +61,14 @@ export default ({ employee, setEmployees }) => {
                         : ""
                 }
 
-                {   getCurrentUser().employee
-                   ?  <button className="btn--fireEmployee" onClick={() => {
-                        fetch(`http://localhost:8088/users/${employee.id}`, {
-                            method: "DELETE"
-                        })
-                            .then(() => {
-                                fetch(`http://localhost:8088/users?employees=true`)
-                                    .then(response => response.json())
-                                    .then((data) => {
-                                        setEmployees(data)
-                                    })
+
+                {getCurrentUser().employee
+                    ? <button className="btn--fireEmployee" onClick={() => {
+                        fetchIt(`${Settings.remoteURL}/users/${employee.id}`,
+                            "DELETE").then(() => {
+                                EmployeeRepository.getAll().then((data) => {
+                                    setEmployees(data)
+                                })
 
                             })
                     }}>Fire</button>
